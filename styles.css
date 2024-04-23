@@ -1,0 +1,7 @@
+div {
+    float: left;
+    border: solid;
+    box-sizing: border-box;
+    width: 50%;
+    height: 500px;
+}
