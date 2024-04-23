@@ -1,9 +1,9 @@
 class mapView {
     constructor(con, root) {
         const div = root.append('div')
-            .style('width', '50%')
-            .style('height', '100%')
-            .append("svg");
+        .style('width', '50%')
+        .style('height', '100%')
+        .append("svg");
 
             d3.json('voter_stats.csv').then(function(bb) {
             let width = 200, height = 200;
