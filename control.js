@@ -5,7 +5,7 @@ new (class Control {
             .style('height', '60vw');
 
         // Change the file names below to fit:
-        // this.pieChart = new PieChart(this, root);
+        this.pieCharts = new pieCharts(this, root);
         // this.barChart = new BarChart(this, root);
         // this.mapView = new MapView(this, root);
     }
@@ -16,8 +16,8 @@ new (class Control {
 
     // For the interaction part
     clickMethod(Message,Color){
-        this.viewA.receiveInfo(Message,Color);
-        this.viewB.receiveInfo(Message,Color);
-        this.viewC.receiveInfo(Message,Color);
+        //this.viewA.receiveInfo(Message,Color);
+        //this.viewB.receiveInfo(Message,Color);
+        //this.viewC.receiveInfo(Message,Color);
     }
 })()
