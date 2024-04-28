@@ -47,7 +47,7 @@ class mapView {
         this.svg.selectAll("circle")
             .transition()
             .duration(300)
-            .style("opacity", 0.3);
+            .style("opacity", 0.05);
 
         if (this.lastClickedCounty && this.lastClickedCounty !== currentCountyName) {
             this.svg.selectAll(`circle[data-county="${this.lastClickedCounty}"]`)
