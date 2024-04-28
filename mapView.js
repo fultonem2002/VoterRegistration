@@ -22,7 +22,7 @@ class mapView {
 
         const path = d3.geoPath().projection(projection);
         d3.json("./voter_data_by_county_and_party.json").then(voterData => {
-            const radiusScale = d3.scaleSqrt().domain([0, 3000000]).range([1, 50]);
+            const radiusScale = d3.scaleSqrt().domain([0, 3000000]).range([4, 50]);
 
             d3.json("./NCCountiesComplete.geo.json").then(ncCounties => {
                 this.ncCounties = ncCounties;
@@ -70,7 +70,7 @@ class mapView {
             .attr("cy", (circleData, i) => {
                 const county = this.ncCounties.features.find(f => f.properties.NAME.toUpperCase() === currentCountyName);
                 const center = this.projection(d3.geoCentroid(county));
-                return center[1] + (i * 20) - 10;
+                return center[1] + (i * 30) - 10;
             });
 
         this.lastClickedCounty = currentCountyName;
