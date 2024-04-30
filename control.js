@@ -5,9 +5,11 @@ new (class Control {
             .style('height', '60vw');
 
         // Change the file names below to fit:
-        this.pieCharts = new pieCharts(this, root);
+        //this.pieCharts = new pieCharts(this, root);
         // this.barChart = new BarChart(this, root);
-        // this.mapView = new MapView(this, root);
+        this.mapView = new mapView(this, root);
+        this.pieCharts = new pieCharts(this, root);
+        this.barChart = new BarChart(this, root);
     }
 
     Test(str) {
