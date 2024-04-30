@@ -1,7 +1,15 @@
 // Todo: Interact with different counties and show individual sets per county
 class barGraph {
     constructor(con, root) {
+        const div = root.append('div')
+        .style('width', '50%')
+        .style('height', '100%')
+        .append("svg");
 
+        d3.csv('voterStats.csv')
+            .then(data => {
+                createBarCharts(data)
+            });
     }
 
     createBarCharts(data) {
@@ -48,7 +56,7 @@ class barGraph {
         // Stacking data
         var stackData = d3.stack()
             .keys('party_cd')
-            .(data)
+            (data)
         
         // X Axis Label
         svg.append('text')
