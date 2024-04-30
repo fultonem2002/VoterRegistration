@@ -2,13 +2,13 @@ class mapView {
     constructor(con, root) {
         this.con = con;
         this.svg = root.append('div')
-            .style('width', '120vw')
-            .style('height', '60vw')
+            .style('width', '1200')
+            .style('height', '850')
             .append('svg')
             .attr('width', 1000)
             .attr('height', 800);
-        this.width = 1000;
-        this.height = 800;
+        this.width = 1100;
+        this.height = 400;
         this.lastClickedCounty = null;
         this.initMap();
     }
