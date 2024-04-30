@@ -30,8 +30,8 @@ class pieCharts {
     createPieChart(party, title) {
         // set the dimensions and margins of the graph
         const width = 230;
-        const height = 280;
-        const margin = 10;
+        const height = 250;
+        const margin = 15;
         const radius = Math.min(width, height) / 2 - margin;
 
 
@@ -45,7 +45,7 @@ class pieCharts {
 
         svg.append("text")
             .attr("x", -50)
-            .attr("y", -120)
+            .attr("y", -110)
             .attr("text-anchro", "middle")
             .style("font-size", "14px")
             .style("font-weight", "bold")
