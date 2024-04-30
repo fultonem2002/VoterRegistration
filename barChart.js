@@ -8,7 +8,7 @@ class barGraph {
 
         d3.csv('voterStats.csv')
             .then(data => {
-                createBarCharts(data)
+                this.createBarCharts(data);
             });
     }
 
@@ -19,7 +19,7 @@ class barGraph {
         height = svg.attr("height") - margin;
 
         var xAxis = d3.scaleBand().range ([0, width]).padding(0.5),
-        yAxis = d3.scaleLinear().range ([height, 0]);
+        yAxis = d3.scaleLinear().range ([0, height]);
 
 
         var g = svg.append("g")
@@ -34,7 +34,7 @@ class barGraph {
 
         // X-Axis
         var xAxis = d3.scaleBand()
-            .domain()
+            .domain([0, 100])
             .range([0, width])
             .padding([0.3])
         svg.append("g")
@@ -44,13 +44,13 @@ class barGraph {
         // Y-Axis
             var yAxis = d3.scaleLinear()
             .domain([0, 100])
-            .range([height, 0]);
+            .range([0, height]);
         svg.append("g")
             .call(d3.axisLeft(yAxis));
 
         // Adds color
         var color = d3.scaleOrdinal()
-            .domain()
+            .domain([0, 100])
             .range(['#ff0000', '#0000FF', '#00FF00', '#FFFF00', '#FFC0CB', '#CBC3E3'])
 
         // Stacking data
@@ -80,7 +80,7 @@ class barGraph {
             .data()
             .enter().append("g")
             .attr("class", "bars")
-            .style("fill", function(d, i) { return colors[i]; })
+            .style("fill", function(d, i) { return color[i]; })
             .style("stroke", "#000");
         
         var rect = groups.selectAll("rect")
