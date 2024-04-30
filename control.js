@@ -17,7 +17,9 @@ new (class Control {
     }
 
     // For the interaction part
-    clickMethod(Message,Color){
+    clickMethod(County){
+        console.log(County);
+        this.pieCharts.clickMethod(County)
         //this.viewA.receiveInfo(Message,Color);
         //this.viewB.receiveInfo(Message,Color);
         //this.viewC.receiveInfo(Message,Color);
