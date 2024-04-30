@@ -51,7 +51,7 @@ class pieCharts {
             .style("font-weight", "bold")
             .text(title);
 
-        const data = { Man: party[0], Woman: party[1], Unknown: party[2] }
+        const data = { Male: party[0], Female: party[1], Unknown: party[2] }
 
         // set the color scale
         const color = d3.scaleOrdinal()
@@ -80,6 +80,7 @@ class pieCharts {
             .style("stroke-width", "2px")
             .style("opacity", 0.7)
 
+        
         // Now add the annotation. Use the centroid method to get the best coordinates
         svg
             .selectAll('mySlices')
@@ -88,12 +89,13 @@ class pieCharts {
             .text(function (d) {
                 // Calculate percentage
                 const percent = (d.data[1] / d3.sum(party) * 100);
-                return percent.toFixed(1) + "%";
+                return percent.toFixed(1) + "%" + "\n" +  "(" + d.data[0].charAt(0) + ")";
             })
             .attr("transform", function (d) { return `translate(${arcGenerator.centroid(d)})` })
             .style("text-anchor", "middle")
             .style("font-weight", "bold")
             .style("font-size", 17)
+        
     }
 
     clickMethod(county) {
@@ -120,34 +122,34 @@ class pieCharts {
                 var gender = row['sex_code'];
                 switch (party) {
                     case "REP": //Found
-                        if      (gender == "M")     Rep[0]++;
-                        else if (gender == "F")     Rep[1]++;
-                        else                        Rep[2]++;
+                        if (gender == "M") Rep[0]++;
+                        else if (gender == "F") Rep[1]++;
+                        else Rep[2]++;
                         break;
                     case "DEM": //Found
-                        if      (gender == "M")     Dem[0]++;
-                        else if (gender == "F")     Dem[1]++;
-                        else                        Dem[2]++;
+                        if (gender == "M") Dem[0]++;
+                        else if (gender == "F") Dem[1]++;
+                        else Dem[2]++;
                         break;
                     case "GRE":
-                        if      (gender == "M")     Gre[0]++;
-                        else if (gender == "F")     Gre[1]++;
-                        else                        Gre[2]++;
+                        if (gender == "M") Gre[0]++;
+                        else if (gender == "F") Gre[1]++;
+                        else Gre[2]++;
                         break;
                     case "LIB": //Found
-                        if      (gender == "M")     Lib[0]++;
-                        else if (gender == "F")     Lib[1]++;
-                        else                        Lib[2]++;
+                        if (gender == "M") Lib[0]++;
+                        else if (gender == "F") Lib[1]++;
+                        else Lib[2]++;
                         break;
                     case "NLB":
-                        if      (gender == "M")     Nlb[0]++;
-                        else if (gender == "F")     Nlb[1]++;
-                        else                        Nlb[2]++;
+                        if (gender == "M") Nlb[0]++;
+                        else if (gender == "F") Nlb[1]++;
+                        else Nlb[2]++;
                         break;
                     case "UNA":
-                        if      (gender == "M")     Una[0]++;
-                        else if (gender == "F")     Una[1]++;
-                        else                        Una[2]++;
+                        if (gender == "M") Una[0]++;
+                        else if (gender == "F") Una[1]++;
+                        else Una[2]++;
                         break;
                     default:
                         return;
@@ -161,34 +163,34 @@ class pieCharts {
                 var curCounty = row['county_desc'];
                 switch (party) {
                     case "REP":
-                        if      (gender == "M" && county == curCounty)      Rep[0]++;
-                        else if (gender == "F" && county == curCounty)      Rep[1]++;
-                        else if (county == curCounty)                       Rep[2]++;
+                        if (gender == "M" && county == curCounty) Rep[0]++;
+                        else if (gender == "F" && county == curCounty) Rep[1]++;
+                        else if (county == curCounty) Rep[2]++;
                         break;
                     case "DEM":
-                        if      (gender == "M" && county == curCounty)      Dem[0]++;
-                        else if (gender == "F" && county == curCounty)      Dem[1]++;
-                        else if (county == curCounty)                       Dem[2]++;
+                        if (gender == "M" && county == curCounty) Dem[0]++;
+                        else if (gender == "F" && county == curCounty) Dem[1]++;
+                        else if (county == curCounty) Dem[2]++;
                         break;
                     case "GRE":
-                        if      (gender == "M" && county == curCounty)      Gre[0]++;
-                        else if (gender == "F" && county == curCounty)      Gre[1]++;
-                        else if (county == curCounty)                       Gre[2]++;
+                        if (gender == "M" && county == curCounty) Gre[0]++;
+                        else if (gender == "F" && county == curCounty) Gre[1]++;
+                        else if (county == curCounty) Gre[2]++;
                         break;
                     case "LIB": //Found
-                        if      (gender == "M" && county == curCounty)      Lib[0]++;
-                        else if (gender == "F" && county == curCounty)      Lib[1]++;
-                        else if (county == curCounty)                       Lib[2]++;
+                        if (gender == "M" && county == curCounty) Lib[0]++;
+                        else if (gender == "F" && county == curCounty) Lib[1]++;
+                        else if (county == curCounty) Lib[2]++;
                         break;
                     case "NLB":
-                        if      (gender == "M" && county == curCounty)      Nlb[0]++;
-                        else if (gender == "F" && county == curCounty)      Nlb[1]++;
-                        else if (county == curCounty)                       Nlb[2]++;
+                        if (gender == "M" && county == curCounty) Nlb[0]++;
+                        else if (gender == "F" && county == curCounty) Nlb[1]++;
+                        else if (county == curCounty) Nlb[2]++;
                         break;
                     case "UNA":
-                        if      (gender == "M" && county == curCounty)      Una[0]++;
-                        else if (gender == "F" && county == curCounty)      Una[1]++;
-                        else if (county == curCounty)                       Una[2]++;
+                        if (gender == "M" && county == curCounty) Una[0]++;
+                        else if (gender == "F" && county == curCounty) Una[1]++;
+                        else if (county == curCounty) Una[2]++;
                         break;
                     default:
                         return;
