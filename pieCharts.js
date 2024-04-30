@@ -15,8 +15,6 @@ class pieCharts {
         d3.csv('voterStats.csv')
             .then(data => {
                 this.readData(data, null);
-                console.log("MALE = BLUE")
-                console.log("FEMALE = RED")
                 this.createPieChart(Dem, "Democratic");
                 this.createPieChart(Rep, "Republican");
                 this.createPieChart(Gre, "Green");
@@ -104,6 +102,18 @@ class pieCharts {
         //      - current pie charts are erased...
         //      - data is adjusted (implemented i think)
         //      - recreate all of the pie charts
+
+        //Clear current Pie Charts
+        d3.csv('voterStats.csv')
+            .then(data => {
+                this.readData(data, county);
+                this.createPieChart(Dem, "Democratic");
+                this.createPieChart(Rep, "Republican");
+                this.createPieChart(Gre, "Green");
+                this.createPieChart(Lib, "Libertarian");
+                this.createPieChart(Nlb, "No Label");
+                this.createPieChart(Una, "Unaffiliated");
+            })
     }
 
     readData(data, county) {
