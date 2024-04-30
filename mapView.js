@@ -10,10 +10,10 @@ class mapView {
         this.width = 1100;
         this.height = 400;
         this.lastClickedCounty = null;
-        this.initMap();
+        this.initMap(con);
     }
 
-    initMap() {
+    initMap(con) {
         const projection = d3.geoMercator()
             .center([-80, 35.5])
             .scale(7000)
@@ -33,14 +33,14 @@ class mapView {
                     .attr("d", path)
                     .style("fill", "lightgray")
                     .style("stroke", "white")
-                    .on("click", (event, d) => this.onClickCounty(event, d));
+                    .on("click", (event, d) => this.onClickCounty(event, d, con));
 
                 this.plotCircles(ncCounties, voterData, radiusScale, projection);
             });
         });
     }
 
-    onClickCounty(event, d) {
+    onClickCounty(event, d, con) {
         const currentCountyName = d.properties.NAME.toUpperCase();
         this.svg.selectAll("path")
             .style("fill", "lightgray");
@@ -74,6 +74,8 @@ class mapView {
             });
 
         this.lastClickedCounty = currentCountyName;
+
+        this.con.clickMethod(currentCountyName);
     }
 
     plotCircles(ncCounties, voterData, radiusScale, projection) {
