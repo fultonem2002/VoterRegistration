@@ -86,6 +86,11 @@ class pieCharts {
     clickMethod(county) {
         this.div.selectAll(".pie-chart").remove();
 
+<<<<<<< HEAD
+        //Clear current Pie Charts
+        this.removePieCharts();
+=======
+>>>>>>> 546b1fb7c5892c71a06d2a920255983f41658b21
         d3.csv('voterStats.csv')
             .then(data => {
                 this.readData(data, county);
@@ -96,6 +101,10 @@ class pieCharts {
                 this.createPieChart(Nlb, "No Label");
                 this.createPieChart(Una, "Unaffiliated");
             })
+    }
+
+    removePieCharts() {
+        d3.select("#pieCharts").selectAll("*").remove();
     }
 
     readData(data, county) {
