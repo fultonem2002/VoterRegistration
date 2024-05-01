@@ -11,6 +11,7 @@ class mapView {
         this.height = 400;
         this.lastClickedCounty = null;
         this.initMap(con);
+        this.drawLegend();
     }
 
     initMap(con) {
@@ -37,6 +38,36 @@ class mapView {
 
                 this.plotCircles(ncCounties, voterData, radiusScale, projection);
             });
+        });
+    }
+    drawLegend() {
+        const partyColors = {
+            "DEM": "#F1DBDC",
+            "REP": "#EBBCBA",
+            "LIB": "#CD7C84",
+            "NLB": "#9193AB",
+            "UNA": "#678AB4"
+        };
+
+        const legend = this.svg.append('g')
+            .attr('transform', 'translate(1000, 50)'); // Shift right to avoid overlap
+
+        let offsetY = 0;
+        Object.entries(partyColors).forEach(([party, color], index) => {
+            const legendEntry = legend.append('g')
+                .attr('transform', `translate(0, ${offsetY})`);
+
+            legendEntry.append('rect')
+                .attr('width', 20)
+                .attr('height', 20)
+                .style('fill', color);
+
+            legendEntry.append('text')
+                .attr('x', 30)
+                .attr('y', 15)
+                .text(party);
+
+            offsetY += 30;
         });
     }
 
@@ -66,7 +97,7 @@ class mapView {
         this.svg.selectAll(`circle[data-county="${currentCountyName}"]`)
             .transition()
             .duration(300)
-            .style("opacity", 1)
+            .style("opacity", 10)
             .attr("cy", (circleData, i) => {
                 const county = this.ncCounties.features.find(f => f.properties.NAME.toUpperCase() === currentCountyName);
                 const center = this.projection(d3.geoCentroid(county));
@@ -80,11 +111,11 @@ class mapView {
 
     plotCircles(ncCounties, voterData, radiusScale, projection) {
         const partyColors = {
-            "DEM": "blue",
-            "REP": "red",
-            "LIB": "yellow",
-            "NLB": "green",
-            "UNA": "black"
+            "DEM": "#F1DBDC",
+            "REP": "#EBBCBA",
+            "LIB": "#CD7C84",
+            "NLB": "#9193AB",
+            "UNA": "#678AB4"
         };
 
         ncCounties.features.forEach(county => {

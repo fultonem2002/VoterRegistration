@@ -14,7 +14,7 @@ class barChart {
 
         this.x = d3.scaleBand().rangeRound([0, this.width - this.margin.left - this.margin.right]).padding(0.05);
         this.y = d3.scaleLinear().rangeRound([this.height - this.margin.top - this.margin.bottom, 0]);
-        this.z = d3.scaleOrdinal().domain(['DEM', 'REP', 'LIB', 'NLB', 'UNA']).range(['blue', 'red', 'yellow', 'green', 'black']);
+        this.z = d3.scaleOrdinal().domain(['DEM', 'REP', 'LIB', 'NLB', 'UNA']).range(['#F1DBDC', '#EBBCBA', '#CD7C84', '#9193AB', '#678AB4']);
         this.keys = ['DEM', 'REP', 'LIB', 'NLB', 'UNA'];
 
         d3.csv('county_processed_voterStats.csv').then(data => {
@@ -47,19 +47,20 @@ class barChart {
                 this.g.append('rect')
                     .attr('x', this.x(d.race_code))
                     .attr('y', this.y(y1))
-                    .attr('width', this.x.bandwidth())
+                    .attr('width', this.x.bandwidth() - 20)
                     .attr('height', this.y(y0) - this.y(y1))
                     .attr('fill', this.z(key));
 
                 if (d[key] > 5) { 
                     this.g.append('text')
-                        .attr('x', this.x(d.race_code) + this.x.bandwidth() / 2)
+                        .attr('x', this.x(d.race_code) + this.x.bandwidth() / 2 - 10)
                         .attr('y', this.y(y0 + (+d[key] / 2)))
                         .attr('dy', '0.35em')
                         .attr('text-anchor', 'middle')
                         .text(`${d[key]}%`)
-                        .style('fill', 'white')
-                        .style('font-size', '12px');
+                        .style('fill', 'black')
+                        .style('font-size', '18px')
+                        .style('font-weight', 'bold')
                 }
                 y0 = y1; 
             });
@@ -68,6 +69,8 @@ class barChart {
         this.g.append('g')
             .attr('class', 'axis')
             .attr('transform', `translate(0, ${this.height - this.margin.top - this.margin.bottom})`)
+            .style('font-size', '20px')
+            .style('font-weight', 'bold')
             .call(d3.axisBottom(this.x));
 
     }
