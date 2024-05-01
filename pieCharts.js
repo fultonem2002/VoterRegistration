@@ -104,6 +104,7 @@ class pieCharts {
         //      - recreate all of the pie charts
 
         //Clear current Pie Charts
+        this.removePieCharts();
         d3.csv('voterStats.csv')
             .then(data => {
                 this.readData(data, county);
@@ -114,6 +115,10 @@ class pieCharts {
                 this.createPieChart(Nlb, "No Label");
                 this.createPieChart(Una, "Unaffiliated");
             })
+    }
+
+    removePieCharts() {
+        d3.select("#pieCharts").selectAll("*").remove();
     }
 
     readData(data, county) {
