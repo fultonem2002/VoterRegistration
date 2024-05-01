@@ -1,96 +1,74 @@
-// Todo: Interact with different counties and show individual sets per county
-class barGraph {
-    constructor(con, root) {
-        const div = root.append('div')
-        .style('width', '50%')
-        .style('height', '100%')
-        .append("svg");
+class barChart {
+    constructor(control, root) {
+        this.control = control;
+        this.svg = root.append('div')
+            .style('width', '1200px')
+            .style('height', '900px')
+            .append('svg')
+            .attr('width', 1200)
+            .attr('height', 900);
+        this.width = 1200;
+        this.height = 900;
+        this.margin = { top: 20, right: 20, bottom: 30, left: 40 };
+        this.g = this.svg.append('g').attr('transform', `translate(${this.margin.left},${this.margin.top})`);
 
-        d3.csv('voterStats.csv')
-            .then(data => {
-                this.createBarCharts(data);
+        this.x = d3.scaleBand().rangeRound([0, this.width - this.margin.left - this.margin.right]).padding(0.05);
+        this.y = d3.scaleLinear().rangeRound([this.height - this.margin.top - this.margin.bottom, 0]);
+        this.z = d3.scaleOrdinal().domain(['DEM', 'REP', 'LIB', 'NLB', 'UNA']).range(['blue', 'red', 'yellow', 'green', 'black']);
+        this.keys = ['DEM', 'REP', 'LIB', 'NLB', 'UNA'];
+
+        d3.csv('county_processed_voterStats.csv').then(data => {
+            this.data = data.map(d => {
+                let total = this.keys.reduce((acc, key) => acc + +d[key], 0);
+                this.keys.forEach(key => {
+                    d[key] = (total ? (d[key] / total) * 100 : 0).toFixed(2);
+                });
+                return d;
             });
+        });
     }
 
-    createBarCharts(data) {
-        var svg = d3.select("svg"),
-        margin = {top: 40, right: 30, bottom: 20, left: 40},
-        width = svg.attr("width") - margin,
-        height = svg.attr("height") - margin;
-
-        var xAxis = d3.scaleBand().range ([0, width]).padding(0.5),
-        yAxis = d3.scaleLinear().range ([0, height]);
-
-
-        var g = svg.append("g")
-            .attr("transform", "translate(100, 100)");
-
-
-
-        d3.csv('voter_stats.csv', function(error, data) {
-            if (error) {
-                throw error;
-            }
-
-        // X-Axis
-        var xAxis = d3.scaleBand()
-            .domain([0, 100])
-            .range([0, width])
-            .padding([0.3])
-        svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(xAxis).tickSzeOuter(0));
-
-        // Y-Axis
-            var yAxis = d3.scaleLinear()
-            .domain([0, 100])
-            .range([0, height]);
-        svg.append("g")
-            .call(d3.axisLeft(yAxis));
-
-        // Adds color
-        var color = d3.scaleOrdinal()
-            .domain([0, 100])
-            .range(['#ff0000', '#0000FF', '#00FF00', '#FFFF00', '#FFC0CB', '#CBC3E3'])
-
-        // Stacking data
-        var stackData = d3.stack()
-            .keys('party_cd')
-            (data)
-        
-        // X Axis Label
-        svg.append('text')
-        .attr('x', width/2)
-        .attr('y', height + 30)
-        .attr('text-anchor', 'middle')
-        .style('font-family', 'Helvetica')
-        .style('font-size', 12)
-        .text('Race');
-
-        // Y Axis Label
-        svg.append('text')
-        .attr('text-anchor', 'middle')
-        .attr('transform', 'translate(-30,' + height/2 + ')rotate(-90)')
-        .style('font-family', 'Helvetica')
-        .style('font-size', 12)
-        .text('Party');
-        
-        // Bars
-        var groups = svg.selectAll("g.bars")
-            .data()
-            .enter().append("g")
-            .attr("class", "bars")
-            .style("fill", function(d, i) { return color[i]; })
-            .style("stroke", "#000");
-        
-        var rect = groups.selectAll("rect")
-        .data(function(d) { return d; })
-        .enter()
-        .append("rect")
-        .attr("x", function(d) { return xScale(d.x); })
-        .attr("y", function(d) { return yScale(d.y0 + d.y); })
-        .attr("height", function(d) { return yScale(d.y0) - yScale(d.y0 + d.y); })
-        .attr("width", xScale.rangeBand())
+    updateChart(county) {
+        const filteredData = this.data.filter(d => d.county_desc === county);
+        if (filteredData.length === 0) {
+            console.log("No data for selected county:", county);
+            return;
         }
-    )}
+
+        this.x.domain(filteredData.map(d => d.race_code));
+        this.y.domain([0, 100]); 
+
+        this.g.selectAll('*').remove();
+
+        filteredData.forEach(d => {
+            let y0 = 0;
+            this.keys.forEach(key => {
+                const y1 = y0 + +d[key];
+                this.g.append('rect')
+                    .attr('x', this.x(d.race_code))
+                    .attr('y', this.y(y1))
+                    .attr('width', this.x.bandwidth())
+                    .attr('height', this.y(y0) - this.y(y1))
+                    .attr('fill', this.z(key));
+
+                if (d[key] > 5) { 
+                    this.g.append('text')
+                        .attr('x', this.x(d.race_code) + this.x.bandwidth() / 2)
+                        .attr('y', this.y(y0 + (+d[key] / 2)))
+                        .attr('dy', '0.35em')
+                        .attr('text-anchor', 'middle')
+                        .text(`${d[key]}%`)
+                        .style('fill', 'white')
+                        .style('font-size', '12px');
+                }
+                y0 = y1; 
+            });
+        });
+
+        this.g.append('g')
+            .attr('class', 'axis')
+            .attr('transform', `translate(0, ${this.height - this.margin.top - this.margin.bottom})`)
+            .call(d3.axisBottom(this.x));
+
+    }
 }
