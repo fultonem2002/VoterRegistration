@@ -7,10 +7,10 @@ let Una = [];
 
 class pieCharts {
     constructor(con, root) {
-        const div = root.append('div')
-            .style('width', '50%')
-            .style('height', '100%')
-            .append("svg");
+        //const div = root.append('div')
+        //    .style('width', '50%')
+        //    .style('height', '100%')
+        //    .append("svg");
 
         d3.csv('voterStats.csv')
             .then(data => {

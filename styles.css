@@ -1,7 +1,11 @@
 div {
     float: left;
-    border: solid;
-    box-sizing: border-box;
     width: 50%;
     height: 500px;
+}
+#pieCharts {
+    position: absolute;
+    padding-top: 10px;
+    margin-top: 600px;
+    margin-left: 10px;
 }

@@ -2,28 +2,36 @@ class mapView {
     constructor(con, root) {
         this.con = con;
         this.svg = root.append('div')
-            .style('width', '1200')
-            .style('height', '850')
+            .style('width', '1200px')
+            .style('height', '950px') 
             .append('svg')
-            .attr('width', 1000)
-            .attr('height', 800);
-        this.width = 1100;
-        this.height = 400;
+            .attr('width', 1200)
+            .attr('height', 950);
+        this.width = 1200;
+        this.height = 950; 
         this.lastClickedCounty = null;
+
+        this.svg.append("text")
+            .attr("x", this.width / 2)
+            .attr("y", 20) 
+            .attr("text-anchor", "middle")
+            .style("font-size", "24px")
+            .style("font-family", "Arial, sans-serif") 
+            .text("Map of North Carolina Counties");
+
         this.initMap(con);
-        this.drawLegend();
     }
 
     initMap(con) {
         const projection = d3.geoMercator()
             .center([-80, 35.5])
-            .scale(7000)
-            .translate([this.width / 2, this.height / 2]);
+            .scale(8000)
+            .translate([this.width / 2, this.height / 2 -  250]);
         this.projection = projection;
 
         const path = d3.geoPath().projection(projection);
         d3.json("./voter_data_by_county_and_party.json").then(voterData => {
-            const radiusScale = d3.scaleSqrt().domain([0, 3000000]).range([4, 50]);
+            const radiusScale = d3.scaleSqrt().domain([0, 3000000]).range([10, 70]);
 
             d3.json("./NCCountiesComplete.geo.json").then(ncCounties => {
                 this.ncCounties = ncCounties;
@@ -40,36 +48,6 @@ class mapView {
             });
         });
     }
-    drawLegend() {
-        const partyColors = {
-            "DEM": "#F1DBDC",
-            "REP": "#EBBCBA",
-            "LIB": "#CD7C84",
-            "NLB": "#9193AB",
-            "UNA": "#678AB4"
-        };
-
-        const legend = this.svg.append('g')
-            .attr('transform', 'translate(1000, 50)'); // Shift right to avoid overlap
-
-        let offsetY = 0;
-        Object.entries(partyColors).forEach(([party, color], index) => {
-            const legendEntry = legend.append('g')
-                .attr('transform', `translate(0, ${offsetY})`);
-
-            legendEntry.append('rect')
-                .attr('width', 20)
-                .attr('height', 20)
-                .style('fill', color);
-
-            legendEntry.append('text')
-                .attr('x', 30)
-                .attr('y', 15)
-                .text(party);
-
-            offsetY += 30;
-        });
-    }
 
     onClickCounty(event, d, con) {
         const currentCountyName = d.properties.NAME.toUpperCase();
@@ -78,7 +56,7 @@ class mapView {
         this.svg.selectAll("circle")
             .transition()
             .duration(300)
-            .style("opacity", 0.05);
+            .style("opacity", 0.03);
 
         if (this.lastClickedCounty && this.lastClickedCounty !== currentCountyName) {
             this.svg.selectAll(`circle[data-county="${this.lastClickedCounty}"]`)

@@ -2,15 +2,23 @@ class barChart {
     constructor(control, root) {
         this.control = control;
         this.svg = root.append('div')
-            .style('width', '1200px')
-            .style('height', '900px')
+            .style('width', '600px')
+            .style('height', '600px')
             .append('svg')
-            .attr('width', 1200)
-            .attr('height', 900);
-        this.width = 1200;
-        this.height = 900;
-        this.margin = { top: 20, right: 20, bottom: 30, left: 40 };
+            .attr('width', '600px')
+            .attr('height', '600px');
+        this.width = 600;
+        this.height = 600;
+        this.margin = { top: 50, right: 20, bottom: 30, left: 40 }; 
         this.g = this.svg.append('g').attr('transform', `translate(${this.margin.left},${this.margin.top})`);
+
+        this.svg.append("text")
+            .attr("x", this.width / 2)
+            .attr("y", 30) 
+            .attr("text-anchor", "middle")
+            .style("font-size", "24px")
+            .style("font-family", "Arial, sans-serif")
+            .text("Voter Demographics by County");
 
         this.x = d3.scaleBand().rangeRound([0, this.width - this.margin.left - this.margin.right]).padding(0.05);
         this.y = d3.scaleLinear().rangeRound([this.height - this.margin.top - this.margin.bottom, 0]);
@@ -25,8 +33,10 @@ class barChart {
                 });
                 return d;
             });
+            this.updateChart(this.data[0].county_desc);
         });
     }
+
 
     updateChart(county) {
         const filteredData = this.data.filter(d => d.county_desc === county);
@@ -45,7 +55,7 @@ class barChart {
             this.keys.forEach(key => {
                 const y1 = y0 + +d[key];
                 this.g.append('rect')
-                    .attr('x', this.x(d.race_code))
+                    .attr('x', this.x(d.race_code) + 10)
                     .attr('y', this.y(y1))
                     .attr('width', this.x.bandwidth() - 20)
                     .attr('height', this.y(y0) - this.y(y1))
@@ -53,7 +63,7 @@ class barChart {
 
                 if (d[key] > 5) { 
                     this.g.append('text')
-                        .attr('x', this.x(d.race_code) + this.x.bandwidth() / 2 - 10)
+                        .attr('x', this.x(d.race_code) + this.x.bandwidth() / 2)
                         .attr('y', this.y(y0 + (+d[key] / 2)))
                         .attr('dy', '0.35em')
                         .attr('text-anchor', 'middle')
