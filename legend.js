@@ -86,11 +86,10 @@ class legend {
             offsetY += 30 + size * 2;
         });
 
-        // Add race codes to the right of the existing items
-        offsetY = 30; // Reset to start at the same vertical start
+        offsetY = 30;
         Object.entries(raceCodes).forEach(([code, desc], index) => {
             const raceEntry = legend.append('g')
-                .attr('transform', `translate(180, ${offsetY})`); // Offset to the right
+                .attr('transform', `translate(180, ${offsetY})`);
 
             raceEntry.append('text')
                 .attr('x', 0)
